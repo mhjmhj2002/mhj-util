@@ -26,7 +26,9 @@ public class CsvWriter {
 			builder.append(System.lineSeparator());
 		}
 		try {
-			Files.write(Paths.get(path), builder.toString().getBytes());
+			if (dados.getDados().size() > 0) {
+				Files.write(Paths.get(path), builder.toString().getBytes());
+			}
 		} catch(NoSuchFileException e) {			
 		}
 	}

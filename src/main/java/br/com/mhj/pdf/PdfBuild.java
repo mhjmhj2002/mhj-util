@@ -47,10 +47,11 @@ public class PdfBuild extends Build {
 		PdfReaderSantander pdfReader = new PdfReaderSantander();
 
 		String dir = EnumTipoCartao.FREE.getNome() + "\\";
+		String dirSaida = "saida\\";
 
 		String entrada = path + dir + EnumTipoCartao.FREE.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.PDF.getExtensao();
-		String saida = path + dir + EnumTipoCartao.FREE.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+		String saida = path + dir + dirSaida + EnumTipoCartao.FREE.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.CSV.getExtensao();
 		pdfReader.read(entrada);
 		
@@ -92,10 +93,11 @@ public class PdfBuild extends Build {
 		PdfReaderSantander pdfReader = new PdfReaderSantander();
 
 		String dir = EnumTipoCartao.PLATINUM.getNome() + "\\";
+		String dirSaida = "saida\\";
 
 		String entrada = path + dir + EnumTipoCartao.PLATINUM.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.PDF.getExtensao();
-		String saida = path + dir + EnumTipoCartao.PLATINUM.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+		String saida = path + dir + dirSaida + EnumTipoCartao.PLATINUM.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.CSV.getExtensao();
 		pdfReader.read(entrada);
 		
@@ -114,10 +116,11 @@ public class PdfBuild extends Build {
 		PdfReaderSantander pdfReader = new PdfReaderSantander();
 
 		String dir = EnumTipoCartao.CC.getNome() + "\\";
+		String dirSaida = "saida\\";
 
 		String entrada = path + dir + EnumTipoCartao.CC.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.PDF.getExtensao();
-		String saida = path + dir + EnumTipoCartao.CC.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+		String saida = path + dir + dirSaida + EnumTipoCartao.CC.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.CSV.getExtensao();
 		pdfReader.readCC(entrada);
 		
@@ -136,10 +139,11 @@ public class PdfBuild extends Build {
 		PdfReaderNubank pdfReader = new PdfReaderNubank();
 
 		String dir = EnumTipoCartao.NUBANK.getNome() + "\\";
+		String dirSaida = "saida\\";
 
 		String entrada = path + dir + EnumTipoCartao.NUBANK.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.PDF.getExtensao();
-		String saida = dir + EnumTipoCartao.NUBANK.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+		String saida = dir + dirSaida + EnumTipoCartao.NUBANK.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.CSV.getExtensao();
 		pdfReader.read(entrada);
 		pdfReader.readResult();

@@ -35,10 +35,11 @@ public class XlsBuild extends Build {
 		XlsReaderSantander xlsReader = new XlsReaderSantander();
 
 		String dir = EnumTipoCartao.CC.getNome() + "\\";
+		String dirSaida = "saida\\";
 
 		String entrada = path + dir + EnumTipoCartao.CC.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.XLS.getExtensao();
-		String saida = path + dir + EnumTipoCartao.CC.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+		String saida = path + dir + dirSaida + EnumTipoCartao.CC.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.CSV.getExtensao();
 		xlsReader.read(entrada);
 
