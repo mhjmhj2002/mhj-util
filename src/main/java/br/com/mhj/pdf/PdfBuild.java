@@ -4,42 +4,59 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
 
+import br.com.mhj.build.Build;
 import br.com.mhj.csv.CsvWriter;
-import br.com.mhj.data.EnumMes;
 import br.com.mhj.data.MhjUtilDate;
 import br.com.mhj.enums.EnumExtensao;
+import br.com.mhj.enums.EnumMes;
 import br.com.mhj.enums.EnumSeparador;
+import br.com.mhj.enums.EnumTipoCartao;
 
-public class PdfBuild {
-
+public class PdfBuild extends Build {
+	
 	public void buildSantander() throws IOException, ParseException {
-		
+
 		Calendar calendar = Calendar.getInstance();
-		
+
 		for (int ano = calendar.get(Calendar.YEAR) - 1; ano <= calendar.get(Calendar.YEAR); ano++) {
 			for (int mes = EnumMes.JAN.getCodigo(); mes <= EnumMes.DEZ.getCodigo(); mes++) {
-					tratarMes(ano, mes);
+				tratarMesFree(ano, mes);
+				tratarMesPlatinum(ano, mes);
+				tratarMesCC(ano, mes);
 			}
 		}
-		
+
 	}
-	
-	private void tratarMes(int ano, int mes) throws IOException, ParseException {
-		
+
+	public void buildNubank() throws IOException, ParseException {
+		Calendar calendar = Calendar.getInstance();
+
+		for (int ano = calendar.get(Calendar.YEAR) - 1; ano <= calendar.get(Calendar.YEAR); ano++) {
+			for (int mes = EnumMes.JAN.getCodigo(); mes <= EnumMes.DEZ.getCodigo(); mes++) {
+				tratarMesNubank(ano, mes);
+			}
+		}
+	}
+
+	private void tratarMesFree(int ano, int mes) throws IOException, ParseException {
+
 		EnumMes enumMes = EnumMes.getMesByCodigo(mes);
-		
+
 		String anoMesSeparador = MhjUtilDate.getAnoMesSeparador(ano, enumMes, EnumSeparador.TRACO);
-		
+
 		PdfReaderSantander pdfReader = new PdfReaderSantander();
+
+		String dir = EnumTipoCartao.FREE.getNome() + "\\";
+
+		String entrada = path + dir + EnumTipoCartao.FREE.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+				+ EnumExtensao.PDF.getExtensao();
+		String saida = path + dir + EnumTipoCartao.FREE.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+				+ EnumExtensao.CSV.getExtensao();
+		pdfReader.read(entrada);
 		
-		String path = "C:\\Users\\t0404mnl\\Documents\\Manuel\\Pessoal\\contas\\";		
-		
-		String entradaFree = path + EnumTipoCartao.FREE.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador + EnumExtensao.PDF.getExtensao();
-		String saidaFree = path + EnumTipoCartao.FREE.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador + EnumExtensao.CSV.getExtensao();		
-		pdfReader.read(entradaFree);
-		pdfReader.readResult();	
-		CsvWriter csvWriterFree = new CsvWriter(pdfReader.getDados(), saidaFree);
-		csvWriterFree.write();
+		pdfReader.readResult();
+		CsvWriter csvWriter = new CsvWriter(pdfReader.getDados(), saida);
+		csvWriter.write();
 
 //		pdfReader = new PdfReader();
 //		String entradaNubank = path + EnumTipoCartao.NUBANK.getNome() + EnumExtensao.PDF.getExtensao();
@@ -64,6 +81,71 @@ public class PdfBuild {
 //		pdfReader.readResult();	
 //		CsvWriter csvWriterRiachuelo = new CsvWriter(pdfReader.getDados(), saidaRiachuelo);
 //		csvWriterRiachuelo.write();
+	}
+
+	private void tratarMesPlatinum(int ano, int mes) throws IOException, ParseException {
+
+		EnumMes enumMes = EnumMes.getMesByCodigo(mes);
+
+		String anoMesSeparador = MhjUtilDate.getAnoMesSeparador(ano, enumMes, EnumSeparador.TRACO);
+
+		PdfReaderSantander pdfReader = new PdfReaderSantander();
+
+		String dir = EnumTipoCartao.PLATINUM.getNome() + "\\";
+
+		String entrada = path + dir + EnumTipoCartao.PLATINUM.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+				+ EnumExtensao.PDF.getExtensao();
+		String saida = path + dir + EnumTipoCartao.PLATINUM.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+				+ EnumExtensao.CSV.getExtensao();
+		pdfReader.read(entrada);
+		
+		pdfReader.readResult();
+		CsvWriter csvWriter = new CsvWriter(pdfReader.getDados(), saida);
+		csvWriter.write();
+
+	}
+
+	private void tratarMesCC(int ano, int mes) throws IOException, ParseException {
+
+		EnumMes enumMes = EnumMes.getMesByCodigo(mes);
+
+		String anoMesSeparador = MhjUtilDate.getAnoMesSeparador(ano, enumMes, EnumSeparador.TRACO);
+
+		PdfReaderSantander pdfReader = new PdfReaderSantander();
+
+		String dir = EnumTipoCartao.CC.getNome() + "\\";
+
+		String entrada = path + dir + EnumTipoCartao.CC.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+				+ EnumExtensao.PDF.getExtensao();
+		String saida = path + dir + EnumTipoCartao.CC.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+				+ EnumExtensao.CSV.getExtensao();
+		pdfReader.readCC(entrada);
+		
+		pdfReader.readResult();
+		CsvWriter csvWriter = new CsvWriter(pdfReader.getDados(), saida);
+		csvWriter.write();
+
+	}
+	
+	private void tratarMesNubank(int ano, int mes) throws IOException, ParseException {
+
+		EnumMes enumMes = EnumMes.getMesByCodigo(mes);
+
+		String anoMesSeparador = MhjUtilDate.getAnoMesSeparador(ano, enumMes, EnumSeparador.TRACO);
+
+		PdfReaderNubank pdfReader = new PdfReaderNubank();
+
+		String dir = EnumTipoCartao.NUBANK.getNome() + "\\";
+
+		String entrada = path + dir + EnumTipoCartao.NUBANK.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+				+ EnumExtensao.PDF.getExtensao();
+		String saida = dir + EnumTipoCartao.NUBANK.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+				+ EnumExtensao.CSV.getExtensao();
+		pdfReader.read(entrada);
+		pdfReader.readResult();
+		CsvWriter csvWriterFree = new CsvWriter(pdfReader.getDados(), saida);
+		csvWriterFree.write();
+		
 	}
 
 }

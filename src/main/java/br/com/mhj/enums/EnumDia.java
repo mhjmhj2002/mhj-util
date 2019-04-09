@@ -1,4 +1,4 @@
-package br.com.mhj.data;
+package br.com.mhj.enums;
 
 public enum EnumDia {
 	D1(1,"01",""),

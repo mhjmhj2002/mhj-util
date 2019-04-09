@@ -15,9 +15,9 @@
 
 		<!-- https://mvnrepository.com/artifact/oracle/ojdbc6 -->
 		<dependency>
-			<groupId>oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3</version>
+		<groupId>oracle</groupId>
+		<artifactId>ojdbc6</artifactId>
+		<version>11.2.0.3</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
@@ -32,8 +32,37 @@
 			<artifactId>pdfbox</artifactId>
 			<version>2.0.12</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/fontbox -->
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>fontbox</artifactId>
+			<version>2.0.12</version>
+		</dependency>
+
+
+		<!-- XLS and XLSX files -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jxls</groupId>
+			<artifactId>jxls-jexcel</artifactId>
+			<version>1.0.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+
 
 	</dependencies>
-
 
 </project>

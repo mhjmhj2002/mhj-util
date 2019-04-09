@@ -1,8 +1,8 @@
-package br.com.mhj.pdf;
+package br.com.mhj.enums;
 
 public enum EnumTipoCartao {
 
-	FREE(1, "free"), PLATINUM(2, "platinum"), NUBANK(3, "nubank"), INTER(4, "inter"), RIACHUELO(5,"riachuelo"), DESCONHECIDO(99, "desconhecido");
+	FREE(1, "free"), PLATINUM(2, "platinum"), NUBANK(3, "nubank"), INTER(4, "inter"), RIACHUELO(5,"riachuelo"), CC(6,"cc"), DESCONHECIDO(99, "desconhecido");
 
 	Integer codigo;
 	String nome;

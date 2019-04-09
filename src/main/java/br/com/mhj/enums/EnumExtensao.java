@@ -3,7 +3,8 @@ package br.com.mhj.enums;
 public enum EnumExtensao {
 
 	PDF(1, ".pdf"),
-	CSV(2, ".csv");
+	CSV(2, ".csv"),
+	XLS(3, ".xls");
 
 	Integer codigo;
 	String extensao;

@@ -1,7 +1,5 @@
 package br.com.mhj.pdf;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -14,20 +12,30 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 
-import br.com.mhj.csv.EnumMes;
+import br.com.mhj.enums.EnumType;
 
-public class PdfReaderSantander {
-
-	Dados dados;
-	StringBuilder linhaSeparada;
-	int nuBlocoLinha = 0;
-	int nuLinhaVencimento = 0;
-	Calendar dtVenc;
-
+public class PdfReaderSantander extends PdfReader {
+	
 	public PdfReaderSantander() {
 		super();
 		dados = new Dados();
 		linhaSeparada = new StringBuilder();
+	}
+	
+	public void read(String path) throws IOException, ParseException {
+
+		String[] leitura = super.leituraPdf(path);
+		
+		read(leitura, path);
+
+	}
+	
+	public void readCC(String path) throws IOException, ParseException {
+
+		String[] leitura = super.leituraPdf(path);
+		
+		readCC(leitura, path);
+
 	}
 	
 	public void read(String path, String password) throws IOException, ParseException {
@@ -36,57 +44,61 @@ public class PdfReaderSantander {
 		
 		read(leitura, path);
 	}
-
-	public void read(String path) throws IOException, ParseException {
-
-		String[] leitura = leituraPdf(path);
-		
-		read(leitura, path);
-
-	}
 	
 	private void read (String[] leitura, String path) throws ParseException {
 		if (leitura == null) {
 			return;
 		}
-		String name = path.substring(path.lastIndexOf("\\") - 11, path.indexOf(".pdf"));
 		
-		System.out.println(name);
-
-		EnumTipoCartao tipoCartao = EnumTipoCartao.getTipoCartao(name);
-
-		switch (tipoCartao) {
-		case FREE:
-		case PLATINUM:
-			tratarLinhaSantander(leitura);
-			break;
-		case NUBANK:
-			tratarLinhaN(leitura);
-			break;
-		case RIACHUELO:
-			tratarLinhaRiachuelo(leitura);
-			break;
-		default:
-			break;
+		tratarLinha(leitura);
+		
+//		String name = path.substring(path.lastIndexOf("\\") - 11, path.indexOf(".pdf"));
+//		
+//		System.out.println(name);
+//
+//		EnumTipoCartao tipoCartao = EnumTipoCartao.getTipoCartao(name);
+//
+//		switch (tipoCartao) {
+//		case FREE:
+//		case PLATINUM:
+//			tratarLinhaSantander(leitura);
+//			break;
+//		case NUBANK:
+//			tratarLinhaN(leitura);
+//			break;
+//		case RIACHUELO:
+//			tratarLinhaRiachuelo(leitura);
+//			break;
+//		default:
+//			break;
+//		}
+		
+	}
+	
+	private void readCC(String[] leitura, String path) throws ParseException {
+		if (leitura == null) {
+			return;
 		}
+		
+		tratarLinhaCC(leitura);
 		
 	}
 
-	private String[] leituraPdf(String path, String password) throws IOException {
-		try (PDDocument document = PDDocument.load(new File(path), password)) {
-			document.setAllSecurityToBeRemoved(true);
-			return leituraPdf(document);
-		}
+//	private String[] leituraPdf(String path, String password) throws IOException {
+//		try (PDDocument document = PDDocument.load(new File(path), password)) {
+//			document.setAllSecurityToBeRemoved(true);
+//			return leituraPdf(document);
+//		}
+//
+//	}
 
-	}
-
-	private String[] leituraPdf(String path) throws IOException {
-		try (PDDocument document = PDDocument.load(new File(path))) {
-			return leituraPdf(document);
-		}catch(FileNotFoundException e) {
-			return null;
-		}
-	}
+//	private String[] leituraPdf(String path) throws IOException {
+//		try (PDDocument document = PDDocument.load(new File(path))) {
+//			return leituraPdf(document);
+//		}catch(FileNotFoundException e) {
+//			return null;
+//		}
+//	}
 
 	private String[] leituraPdf(PDDocument document) throws IOException {
 		document.getClass();
@@ -126,7 +138,7 @@ public class PdfReaderSantander {
 		}
 	}
 
-	private void tratarLinhaSantander(String lines[]) throws ParseException {
+	private void tratarLinha(String lines[]) throws ParseException {
 		for (String line : lines) {
 			if(trataLinhaVencimento(line)) {
 				continue;
@@ -245,7 +257,7 @@ public class PdfReaderSantander {
 			dataString += "/" + dtCompra.get(Calendar.YEAR);
 			
 			Dado dado = new Dado();
-			dado.setType(valor.doubleValue() > 0 ? EnumType.EXPENSIVE.id : EnumType.INCOME.id);
+			dado.setType(valor.doubleValue() > 0 ? EnumType.EXPENSIVE.getId() : EnumType.INCOME.getId());
 			dado.setDate(dataString);
 			dado.setItem("Compra Cartao");
 			dado.setAmount(valor.toString());
@@ -296,7 +308,7 @@ public class PdfReaderSantander {
 			}
 			
 			Dado dado = new Dado();
-			dado.setType(valor.doubleValue() > 0 ? EnumType.EXPENSIVE.id : EnumType.INCOME.id);
+			dado.setType(valor.doubleValue() > 0 ? EnumType.EXPENSIVE.getId() : EnumType.INCOME.getId());
 			dado.setDate(dataString);
 			dado.setItem("Compra Cartao");
 			dado.setAmount(valor.toString());
@@ -341,11 +353,11 @@ public class PdfReaderSantander {
 				return;
 			}
 
-			EnumMes enumMes = EnumMes.getMes(mes);
-
-			if (enumMes.equals(EnumMes.DESCONHECIDO)) {
-				return;
-			}
+//			EnumMes enumMes = EnumMes.getMes(mes);
+//
+//			if (enumMes.equals(EnumMes.DESCONHECIDO)) {
+//				return;
+//			}
 
 			System.out.println(line);
 
@@ -356,7 +368,7 @@ public class PdfReaderSantander {
 			int year = c.get(Calendar.YEAR);
 			System.out.println(year);
 
-			c.set(year, enumMes.getCodigo(), day);
+//			c.set(year, enumMes.getCodigo(), day);
 
 			System.out.println(line.substring(7, line.lastIndexOf(" ")));
 			System.out.println(line.substring(line.lastIndexOf(" ") + 1, line.length()));
@@ -444,7 +456,7 @@ public class PdfReaderSantander {
 			// System.out.println(line.substring(line.indexOf("R$") + 3, line.length()));
 
 			Dado dado = new Dado();
-			dado.setType(parse2.doubleValue() > 0 ? EnumType.EXPENSIVE.id : EnumType.INCOME.id);
+			dado.setType(parse2.doubleValue() > 0 ? EnumType.EXPENSIVE.getId() : EnumType.INCOME.getId());
 			dado.setDate(split[0]);
 			dado.setItem("Compra Cartao");
 			dado.setAmount(parse2.toString());
@@ -461,5 +473,16 @@ public class PdfReaderSantander {
 		} catch (ParseException | ArrayIndexOutOfBoundsException e) {
 		}
 
+	}
+
+	private void tratarLinhaCC(String lines[]) throws ParseException {
+		for (String line : lines) {
+			tratarLinhaCC(line);
+		}
+	}
+
+	private void tratarLinhaCC(String line) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -2,6 +2,7 @@ package br.com.mhj.csv;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 import br.com.mhj.pdf.Dado;
@@ -24,7 +25,10 @@ public class CsvWriter {
 			builder.append(dado.getCsvLine());
 			builder.append(System.lineSeparator());
 		}
-		Files.write(Paths.get(path), builder.toString().getBytes());
+		try {
+			Files.write(Paths.get(path), builder.toString().getBytes());
+		} catch(NoSuchFileException e) {			
+		}
 	}
 
 }

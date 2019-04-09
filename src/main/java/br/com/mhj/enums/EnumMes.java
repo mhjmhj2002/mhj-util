@@ -1,4 +1,4 @@
-package br.com.mhj.data;
+package br.com.mhj.enums;
 
 public enum EnumMes {
 	
@@ -13,7 +13,8 @@ public enum EnumMes {
 	SET(9,"09","SET",""),
 	OUT(10,"10","OUT",""),
 	NOV(11,"11","NOV",""),
-	DEZ(12,"12","DEZ","");
+	DEZ(12,"12","DEZ",""),
+	DESCONHECIDO(13,"13","DES","");
 	
 	private int codigo;
 	private String numeral;
