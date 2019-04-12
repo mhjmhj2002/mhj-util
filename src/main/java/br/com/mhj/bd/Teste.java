@@ -18,7 +18,8 @@ public class Teste {
 			connection = DriverManager.getConnection("jdbc:oracle:thin:@10.80.50.153:1521:bdtdintc", "USRINTC",
 					"USRINTC");
 
-			teste2(connection);
+//			teste2(connection);
+			acertarSequence(connection, "sqr_razao_chargeback", 1390-476);
 
 		} catch (SQLException e) {
 
@@ -92,5 +93,16 @@ public class Teste {
 			statement2.executeUpdate(sql);
 			
 		}
+	}
+
+	public void acertarSequence(Connection connection, String sequence, int quant) throws SQLException {
+		Statement statement = connection.createStatement();
+		
+		String query = "select " + sequence + ".nextval from dual";
+		
+		for (int i = 0; i < quant; i++) {
+			ResultSet resultSet = statement.executeQuery(query);
+		}
+		
 	}
 }
