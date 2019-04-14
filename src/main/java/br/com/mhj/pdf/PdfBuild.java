@@ -53,7 +53,7 @@ public class PdfBuild extends Build {
 				+ EnumExtensao.PDF.getExtensao();
 		String saida = path + dir + dirSaida + EnumTipoCartao.FREE.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.CSV.getExtensao();
-		pdfReader.read(entrada);
+		pdfReader.read(entrada, EnumTipoCartao.FREE);
 		
 		pdfReader.readResult();
 		CsvWriter csvWriter = new CsvWriter(pdfReader.getDados(), saida);
@@ -99,7 +99,7 @@ public class PdfBuild extends Build {
 				+ EnumExtensao.PDF.getExtensao();
 		String saida = path + dir + dirSaida + EnumTipoCartao.PLATINUM.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.CSV.getExtensao();
-		pdfReader.read(entrada);
+		pdfReader.read(entrada, EnumTipoCartao.PLATINUM);
 		
 		pdfReader.readResult();
 		CsvWriter csvWriter = new CsvWriter(pdfReader.getDados(), saida);

@@ -2,15 +2,15 @@ package br.com.mhj.enums;
 
 public enum EnumType {
 	
-	EXPENSIVE("G","Gasto"),
-	INCOME("E", "Entrada");
+	EXPENSIVE("G","Expense"),
+	INCOME("E", "Income");
 	
 	private String id;
-	private String descrption;
+	private String description;
 	
-	private EnumType(String id, String descrption) {
+	private EnumType(String id, String description) {
 		this.id = id;
-		this.descrption = descrption;
+		this.description = description;
 	}
 
 	public String getId() {
@@ -21,12 +21,12 @@ public enum EnumType {
 		this.id = id;
 	}
 
-	public String getDescrption() {
-		return descrption;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescrption(String descrption) {
-		this.descrption = descrption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

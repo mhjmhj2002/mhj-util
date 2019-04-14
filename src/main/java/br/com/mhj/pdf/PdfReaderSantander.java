@@ -12,6 +12,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 
+import br.com.mhj.enums.EnumTipoCartao;
 import br.com.mhj.enums.EnumType;
 
 public class PdfReaderSantander extends PdfReader {
@@ -22,11 +23,11 @@ public class PdfReaderSantander extends PdfReader {
 		linhaSeparada = new StringBuilder();
 	}
 	
-	public void read(String path) throws IOException, ParseException {
+	public void read(String path, EnumTipoCartao tipoCartao) throws IOException, ParseException {
 
 		String[] leitura = super.leituraPdf(path);
 		
-		read(leitura, path);
+		read(leitura, path, tipoCartao);
 
 	}
 	
@@ -38,19 +39,19 @@ public class PdfReaderSantander extends PdfReader {
 
 	}
 	
-	public void read(String path, String password) throws IOException, ParseException {
+	public void read(String path, String password, EnumTipoCartao tipoCartao) throws IOException, ParseException {
 		
 		String[] leitura = leituraPdf(path, password);
 		
-		read(leitura, path);
+		read(leitura, path, tipoCartao);
 	}
 	
-	private void read (String[] leitura, String path) throws ParseException {
+	private void read (String[] leitura, String path, EnumTipoCartao tipoCartao) throws ParseException {
 		if (leitura == null) {
 			return;
 		}
 		
-		tratarLinha(leitura);
+		tratarLinha(leitura, tipoCartao);
 		
 //		String name = path.substring(path.lastIndexOf("\\") - 11, path.indexOf(".pdf"));
 //		
@@ -138,7 +139,7 @@ public class PdfReaderSantander extends PdfReader {
 		}
 	}
 
-	private void tratarLinha(String lines[]) throws ParseException {
+	private void tratarLinha(String lines[], EnumTipoCartao tipoCartao) throws ParseException {
 		for (String line : lines) {
 			if(trataLinhaVencimento(line)) {
 				continue;
@@ -154,9 +155,9 @@ public class PdfReaderSantander extends PdfReader {
 			}
 //			 System.out.println(line);
 			if (line.contains(" PARC ")) {
-				tratarLinhaParcSantander(line);
+				tratarLinhaParcSantander(line, tipoCartao);
 			}
-			tratarLinhaVistaSantander(line);
+			tratarLinhaVistaSantander(line, tipoCartao);
 		}
 	}
 
@@ -223,9 +224,10 @@ public class PdfReaderSantander extends PdfReader {
 		return true;
 	}
 	
-	private void tratarLinhaParcSantander(String line) {
+	private void tratarLinhaParcSantander(String line, EnumTipoCartao tipoCartao) {
 //		System.out.println(line);
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM");
+		DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yyyy");
 		DecimalFormat decimalFormat = new DecimalFormat();
 		
 		try {
@@ -255,16 +257,17 @@ public class PdfReaderSantander extends PdfReader {
 			dtCompra.add(Calendar.MONTH, numParc * -1);
 			
 			dataString += "/" + dtCompra.get(Calendar.YEAR);
+			Date parse = dateFormat.parse(dataString);
 			
 			Dado dado = new Dado();
-			dado.setType(valor.doubleValue() > 0 ? EnumType.EXPENSIVE.getId() : EnumType.INCOME.getId());
-			dado.setDate(dataString);
+			dado.setType(valor.doubleValue() > 0 ? EnumType.EXPENSIVE.getDescription() : EnumType.INCOME.getDescription());
+			dado.setDate(dateFormat2.format(parse));
 			dado.setItem("Compra Cartao");
 			dado.setAmount(valor.toString());
 			dado.setParentCategory("Cartao");
-			dado.setCategory("Free");
-			dado.setAccType("Cartao");
-			dado.setAccount("Santander");
+			dado.setCategory(tipoCartao.getNome());
+			dado.setAccType("Cartão de Crédito");
+			dado.setAccount(tipoCartao.getNome());
 			dado.setNotes(descricao + " PARC " + parcelas);
 			dado.setLabel("Cartao");
 			dado.setStatus("R");
@@ -280,8 +283,9 @@ public class PdfReaderSantander extends PdfReader {
 		
 	}
 
-	private void tratarLinhaVistaSantander(String line) {
+	private void tratarLinhaVistaSantander(String line, EnumTipoCartao tipoCartao) {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM");
+		DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yyyy");
 		DecimalFormat decimalFormat = new DecimalFormat();
 		try {
 //			System.out.println(line);
@@ -307,15 +311,17 @@ public class PdfReaderSantander extends PdfReader {
 				dataString += "/" + dtVenc.get(Calendar.YEAR);
 			}
 			
+			Date parse = dateFormat.parse(dataString);
+			
 			Dado dado = new Dado();
-			dado.setType(valor.doubleValue() > 0 ? EnumType.EXPENSIVE.getId() : EnumType.INCOME.getId());
-			dado.setDate(dataString);
+			dado.setType(valor.doubleValue() > 0 ? EnumType.EXPENSIVE.getDescription() : EnumType.INCOME.getDescription());
+			dado.setDate(dateFormat2.format(parse));
 			dado.setItem("Compra Cartao");
 			dado.setAmount(valor.toString());
 			dado.setParentCategory("Cartao");
-			dado.setCategory("Free");
-			dado.setAccType("Cartao");
-			dado.setAccount("Santander");
+			dado.setCategory(tipoCartao.getNome());
+			dado.setAccType("Cartão de Crédito");
+			dado.setAccount(tipoCartao.getNome());
 			dado.setNotes(descricao);
 			dado.setLabel("Cartao");
 			dado.setStatus("R");
@@ -439,6 +445,7 @@ public class PdfReaderSantander extends PdfReader {
 	private void tratarLinhaRiachuelo(String line) {
 		// System.out.println(line.substring(0, 10));
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+		DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yyyy");
 		DecimalFormat decimalFormat = new DecimalFormat();
 		try {
 			String[] split = line.split(" ");
@@ -456,7 +463,7 @@ public class PdfReaderSantander extends PdfReader {
 			// System.out.println(line.substring(line.indexOf("R$") + 3, line.length()));
 
 			Dado dado = new Dado();
-			dado.setType(parse2.doubleValue() > 0 ? EnumType.EXPENSIVE.getId() : EnumType.INCOME.getId());
+			dado.setType(parse2.doubleValue() > 0 ? EnumType.EXPENSIVE.getDescription() : EnumType.INCOME.getDescription());
 			dado.setDate(split[0]);
 			dado.setItem("Compra Cartao");
 			dado.setAmount(parse2.toString());

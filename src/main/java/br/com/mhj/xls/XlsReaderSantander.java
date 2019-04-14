@@ -45,6 +45,7 @@ public class XlsReaderSantander extends XlsReader {
 
 	private void tratarLinha(Row row) {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yyyy");
 		DecimalFormat decimalFormat = new DecimalFormat();
 
 		try {
@@ -54,7 +55,6 @@ public class XlsReaderSantander extends XlsReader {
 			if (dataString.isEmpty()) {
 				return;
 			}
-			@SuppressWarnings("unused")
 			Date parse = dateFormat.parse(dataString);
 
 			cellNum++;
@@ -105,13 +105,13 @@ public class XlsReaderSantander extends XlsReader {
 			}
 
 			Dado dado = new Dado();
-			dado.setType(valor.doubleValue() < 0 ? EnumType.EXPENSIVE.getId() : EnumType.INCOME.getId());
-			dado.setDate(dataString);
-			dado.setItem(valor.doubleValue() < 0 ? EnumType.EXPENSIVE.getDescrption() : EnumType.INCOME.getDescrption());
+			dado.setType(valor.doubleValue() < 0 ? EnumType.EXPENSIVE.getDescription() : EnumType.INCOME.getDescription());
+			dado.setDate(dateFormat2.format(parse));
+			dado.setItem(valor.doubleValue() < 0 ? EnumType.EXPENSIVE.getDescription() : EnumType.INCOME.getDescription());
 			dado.setAmount(valor.toString());
-			dado.setParentCategory("CC");
+			dado.setParentCategory("Cc");
 			dado.setCategory("Van Gogh");
-			dado.setAccType("Conta Corrente");
+			dado.setAccType("Banco");
 			dado.setAccount("Santander");
 			dado.setNotes(descricao);
 			dado.setLabel("Conta Corrente");
