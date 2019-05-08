@@ -10,9 +10,9 @@ public class MainMig {
 
 	public static void main(String[] args) throws IOException, ParseException {
 
-		PdfBuild pdfBuild = new PdfBuild();
+//		PdfBuild pdfBuild = new PdfBuild();
 
-		pdfBuild.buildSantander();
+//		pdfBuild.buildSantander();
 
 //		pdfBuild.buildNubank();
 
