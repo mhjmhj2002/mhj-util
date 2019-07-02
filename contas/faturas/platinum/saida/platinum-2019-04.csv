@@ -1,8 +1,8 @@
-G;02/01/2019;Compra Cartao;114.33;Cartao;Free;Cartao;Santander;CONCERTHUS PARC 03/03;Cartao;R
-G;15/02/2019;Compra Cartao;699.79;Cartao;Free;Cartao;Santander;PARC.SALDO DE FATURA PARC 02/06;Cartao;R
-E;03/04/2019;Compra Cartao;0;Cartao;Free;Cartao;Santander;ANUIDADE DIFERENCIADA PARC 03/12;Cartao;R
-G;02/07/2018;Compra Cartao;34.99;Cartao;Free;Cartao;Santander;ARTWALK ECOMMERCE PARC 10/10;Cartao;R
-G;19/10/2018;Compra Cartao;48.66;Cartao;Free;Cartao;Santander;AZUL LINH PARC 06/06;Cartao;R
-G;19/10/2018;Compra Cartao;5.51;Cartao;Free;Cartao;Santander;VIAJANET PARC 06/06;Cartao;R
-G;23/11/2018;Compra Cartao;40.17;Cartao;Free;Cartao;Santander;NETSHOES*NETSHOES PARC 05/08;Cartao;R
-G;26/03/2019;Compra Cartao;58.77;Cartao;Free;Cartao;Santander;NETSHOES*NETSHOES PARC 01/02;Cartao;R
+Expense;01/02/1970;Compra Cartao;114.33;Cartao;Platinum;Cartão de Crédito;Platinum;CONCERTHUS PARC 03/03;Cartao;R
+Expense;02/15/1970;Compra Cartao;699.79;Cartao;Platinum;Cartão de Crédito;Platinum;PARC.SALDO DE FATURA PARC 02/06;Cartao;R
+Income;04/03/1970;Compra Cartao;0;Cartao;Platinum;Cartão de Crédito;Platinum;ANUIDADE DIFERENCIADA PARC 03/12;Cartao;R
+Expense;07/02/1970;Compra Cartao;34.99;Cartao;Platinum;Cartão de Crédito;Platinum;ARTWALK ECOMMERCE PARC 10/10;Cartao;R
+Expense;10/19/1970;Compra Cartao;48.66;Cartao;Platinum;Cartão de Crédito;Platinum;AZUL LINH PARC 06/06;Cartao;R
+Expense;10/19/1970;Compra Cartao;5.51;Cartao;Platinum;Cartão de Crédito;Platinum;VIAJANET PARC 06/06;Cartao;R
+Expense;11/23/1970;Compra Cartao;40.17;Cartao;Platinum;Cartão de Crédito;Platinum;NETSHOES*NETSHOES PARC 05/08;Cartao;R
+Expense;03/26/1970;Compra Cartao;58.77;Cartao;Platinum;Cartão de Crédito;Platinum;NETSHOES*NETSHOES PARC 01/02;Cartao;R

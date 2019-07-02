@@ -1,6 +1,7 @@
 package br.com.mhj.pdf;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -12,47 +13,49 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 
+import br.com.mhj.enums.EnumPalavraChave;
+import br.com.mhj.enums.EnumSeparador;
 import br.com.mhj.enums.EnumTipoCartao;
 import br.com.mhj.enums.EnumType;
 
 public class PdfReaderSantander extends PdfReader {
-	
+
 	public PdfReaderSantander() {
 		super();
 		dados = new Dados();
 		linhaSeparada = new StringBuilder();
 	}
-	
+
 	public void read(String path, EnumTipoCartao tipoCartao) throws IOException, ParseException {
 
 		String[] leitura = super.leituraPdf(path);
-		
+
 		read(leitura, path, tipoCartao);
 
 	}
-	
+
 	public void readCC(String path) throws IOException, ParseException {
 
 		String[] leitura = super.leituraPdf(path);
-		
+
 		readCC(leitura, path);
 
 	}
-	
+
 	public void read(String path, String password, EnumTipoCartao tipoCartao) throws IOException, ParseException {
-		
+
 		String[] leitura = leituraPdf(path, password);
-		
+
 		read(leitura, path, tipoCartao);
 	}
-	
-	private void read (String[] leitura, String path, EnumTipoCartao tipoCartao) throws ParseException {
+
+	private void read(String[] leitura, String path, EnumTipoCartao tipoCartao) throws ParseException {
 		if (leitura == null) {
 			return;
 		}
-		
+
 		tratarLinha(leitura, tipoCartao);
-		
+
 //		String name = path.substring(path.lastIndexOf("\\") - 11, path.indexOf(".pdf"));
 //		
 //		System.out.println(name);
@@ -73,16 +76,16 @@ public class PdfReaderSantander extends PdfReader {
 //		default:
 //			break;
 //		}
-		
+
 	}
-	
+
 	private void readCC(String[] leitura, String path) throws ParseException {
 		if (leitura == null) {
 			return;
 		}
-		
+
 		tratarLinhaCC(leitura);
-		
+
 	}
 
 //	private String[] leituraPdf(String path, String password) throws IOException {
@@ -141,9 +144,9 @@ public class PdfReaderSantander extends PdfReader {
 
 	private void tratarLinha(String lines[], EnumTipoCartao tipoCartao) throws ParseException {
 		for (String line : lines) {
-			if(trataLinhaVencimento(line)) {
+			if (trataLinhaVencimento(line)) {
 				continue;
-			} 
+			}
 			if (trataLinhaSeparada(line)) {
 				continue;
 			} else {
@@ -165,7 +168,7 @@ public class PdfReaderSantander extends PdfReader {
 		if (line.startsWith("Vencimento")) {
 			nuLinhaVencimento++;
 			return true;
-		} else if (nuLinhaVencimento == 1 ) {
+		} else if (nuLinhaVencimento == 1) {
 			addDataVencimento(line);
 			nuLinhaVencimento = 0;
 			return true;
@@ -184,7 +187,7 @@ public class PdfReaderSantander extends PdfReader {
 		if (nuBlocoLinha == 0) {
 			return trataData(line);
 		}
-		if(nuBlocoLinha == 1 || nuBlocoLinha == 2) {
+		if (nuBlocoLinha == 1 || nuBlocoLinha == 2) {
 			nuBlocoLinha++;
 			return true;
 		}
@@ -193,7 +196,7 @@ public class PdfReaderSantander extends PdfReader {
 			nuBlocoLinha++;
 			return true;
 		}
-		if(nuBlocoLinha == 4) {
+		if (nuBlocoLinha == 4) {
 			nuBlocoLinha++;
 			return true;
 		}
@@ -202,10 +205,10 @@ public class PdfReaderSantander extends PdfReader {
 			linhaSeparada.append(line);
 			return false;
 		}
-		
+
 		return false;
 	}
-	
+
 	private boolean trataData(String line) {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		try {
@@ -223,44 +226,45 @@ public class PdfReaderSantander extends PdfReader {
 		}
 		return true;
 	}
-	
+
 	private void tratarLinhaParcSantander(String line, EnumTipoCartao tipoCartao) {
 //		System.out.println(line);
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM");
 		DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yyyy");
 		DecimalFormat decimalFormat = new DecimalFormat();
-		
+
 		try {
 			String dataString = line.substring(0, 5);
 			String descricao = line.substring(6, line.indexOf(" PARC "));
 			String valorString = line.substring(line.lastIndexOf(" ") + 1, line.length());
 			String parcelas = line.substring(line.indexOf(" PARC ") + 6, line.lastIndexOf(" "));
-			
+
 //			System.out.println(parcelas);
 //			System.out.println(descricao);
-			
+
 //			valorString = valorString.replaceAll(",", ".");
-			
+
 			Date data = dateFormat.parse(dataString);
 			Number valor = decimalFormat.parse(valorString);
 			if (valor.doubleValue() < 0) {
 				return;
 			}
-			
+
 			String[] split2 = parcelas.split("/");
 			Integer numParc = Integer.valueOf(split2[0]);
 			Integer totParc = Integer.valueOf(split2[1]);
-			
+
 			Calendar dtCompra = Calendar.getInstance();
 			dtCompra.setTime(dtVenc.getTime());
-			
+
 			dtCompra.add(Calendar.MONTH, numParc * -1);
-			
+
 			dataString += "/" + dtCompra.get(Calendar.YEAR);
 			Date parse = dateFormat.parse(dataString);
-			
+
 			Dado dado = new Dado();
-			dado.setType(valor.doubleValue() > 0 ? EnumType.EXPENSIVE.getDescription() : EnumType.INCOME.getDescription());
+			dado.setType(
+					valor.doubleValue() > 0 ? EnumType.EXPENSIVE.getDescription() : EnumType.INCOME.getDescription());
 			dado.setDate(dateFormat2.format(parse));
 			dado.setItem("Compra Cartao");
 			dado.setAmount(valor.toString());
@@ -273,14 +277,14 @@ public class PdfReaderSantander extends PdfReader {
 			dado.setStatus("R");
 
 			dados.addDado(dado);
-			
+
 //			System.out.println(dataString);
 //			System.out.println(valorString);
-			
+
 		} catch (ParseException | StringIndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private void tratarLinhaVistaSantander(String line, EnumTipoCartao tipoCartao) {
@@ -292,29 +296,30 @@ public class PdfReaderSantander extends PdfReader {
 			String dataString = line.substring(0, 5);
 			String valorString = line.substring(line.lastIndexOf(" "), line.length());
 			String descricao = line.substring(line.indexOf(" "), line.lastIndexOf(" "));
-			
+
 //			valorString = valorString.replaceAll(",", ".");
 
-			Date data = dateFormat.parse(dataString);			
-			
+			Date data = dateFormat.parse(dataString);
+
 			Number valor = decimalFormat.parse(valorString);
 			if (valor.doubleValue() < 0) {
 				return;
 			}
-			
+
 			String[] split2 = dataString.split("/");
 			int mesCompra = Integer.valueOf(split2[1]);
-			
+
 			if (mesCompra > dtVenc.get(Calendar.MONTH)) {
-				dataString += "/" + (dtVenc.get(Calendar.YEAR)-1);
+				dataString += "/" + (dtVenc.get(Calendar.YEAR) - 1);
 			} else {
 				dataString += "/" + dtVenc.get(Calendar.YEAR);
 			}
-			
+
 			Date parse = dateFormat.parse(dataString);
-			
+
 			Dado dado = new Dado();
-			dado.setType(valor.doubleValue() > 0 ? EnumType.EXPENSIVE.getDescription() : EnumType.INCOME.getDescription());
+			dado.setType(
+					valor.doubleValue() > 0 ? EnumType.EXPENSIVE.getDescription() : EnumType.INCOME.getDescription());
 			dado.setDate(dateFormat2.format(parse));
 			dado.setItem("Compra Cartao");
 			dado.setAmount(valor.toString());
@@ -327,13 +332,13 @@ public class PdfReaderSantander extends PdfReader {
 			dado.setStatus("R");
 
 			dados.addDado(dado);
-			
+
 //			System.out.println(dataString);
 //			System.out.println(valorString);
 //			System.out.println(descricao);
-			
+
 		} catch (ParseException | StringIndexOutOfBoundsException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
@@ -449,12 +454,11 @@ public class PdfReaderSantander extends PdfReader {
 		DecimalFormat decimalFormat = new DecimalFormat();
 		try {
 			String[] split = line.split(" ");
-			
-			
+
 			@SuppressWarnings("unused")
 			Date parse = dateFormat.parse(split[0]);
 			Number parse2 = decimalFormat.parse(split[6]);
-			
+
 			if ("C".equals(split[7])) {
 				return;
 			}
@@ -463,7 +467,8 @@ public class PdfReaderSantander extends PdfReader {
 			// System.out.println(line.substring(line.indexOf("R$") + 3, line.length()));
 
 			Dado dado = new Dado();
-			dado.setType(parse2.doubleValue() > 0 ? EnumType.EXPENSIVE.getDescription() : EnumType.INCOME.getDescription());
+			dado.setType(
+					parse2.doubleValue() > 0 ? EnumType.EXPENSIVE.getDescription() : EnumType.INCOME.getDescription());
 			dado.setDate(split[0]);
 			dado.setItem("Compra Cartao");
 			dado.setAmount(parse2.toString());
@@ -488,8 +493,85 @@ public class PdfReaderSantander extends PdfReader {
 		}
 	}
 
-	private void tratarLinhaCC(String line) {
-		// TODO Auto-generated method stub
+	private void tratarLinhaCC(String line) throws ParseException {
+		validarInicio(line);
+		validarDetalhe(line);
+		validarFim(line);
+
+		System.out.println(line);
+	}
+
+	private void validarInicio(String line) throws ParseException {
+		try {
+			if (dadosExtrato.isFimValidado()
+					|| dadosExtrato.isInicioValidado()
+					|| !EnumPalavraChave.SALDO_EM.getDescricao().equals(line.substring(0, 8))) {
+				return;
+			}
+		} catch (StringIndexOutOfBoundsException e) {
+			return;
+		}
+
+		String dataString = line.substring(9, 14) + EnumSeparador.BARRA.getSimbolo() + super.getAno();
+
+		String[] split = line.split(" ");
+		String valorString = split[split.length - 1];
+		valorString = valorString.replaceAll("\\.", "");
+		valorString = valorString.replaceAll(",", ".");
+		BigDecimal valor = new BigDecimal(valorString);
+
+		Saldo saldo = new Saldo();
+		saldo.setData(dateFormat.parse(dataString));
+		saldo.setValor(valor);
+		dadosExtrato.setSaldoInicio(saldo);
+		dadosExtrato.setInicioValidado(true);
+	}
+
+	private void validarDetalhe(String line) {
+		if (!dadosExtrato.isInicioValidado()
+				|| dadosExtrato.isFimValidado()) {
+			return;
+		}
 		
+		Date dataCompra;
+
+		
+		DadoExtratoCC dadoExtratoCC = new DadoExtratoCC();
+		
+		dadoExtratoCC.setDataCompra(dataCompra);
+		dadoExtratoCC.setDataLancamento(dataLancamento);
+		dadoExtratoCC.setLugarCompra(lugarCompra);
+		dadoExtratoCC.setNumeroDocumento(numeroDocumento);
+		dadoExtratoCC.setTipoCompra(tipoCompra);
+		dadoExtratoCC.setValorCompra(valorCompra);
+		
+		dadosExtrato.getDados().add(dadoExtratoCC);
+
+	}
+
+	private void validarFim(String line) throws ParseException {
+		try {
+			if (dadosExtrato.getDados().size() == 0
+					|| !EnumPalavraChave.SALDO_EM.getDescricao().equals(line.substring(0, 8))) {
+				return;
+			}
+		} catch (StringIndexOutOfBoundsException e) {
+			return;
+		}
+
+		String dataString = line.substring(9, 14) + EnumSeparador.BARRA.getSimbolo() + super.getAno();
+
+		String[] split = line.split(" ");
+		String valorString = split[split.length - 1];
+		valorString = valorString.replaceAll("\\.", "");
+		valorString = valorString.replaceAll(",", ".");
+		BigDecimal valor = new BigDecimal(valorString);
+
+		Saldo saldo = new Saldo();
+		saldo.setData(dateFormat.parse(dataString));
+		saldo.setValor(valor);
+		dadosExtrato.setSaldoFim(saldo);
+		dadosExtrato.setFimValidado(true);
+
 	}
 }

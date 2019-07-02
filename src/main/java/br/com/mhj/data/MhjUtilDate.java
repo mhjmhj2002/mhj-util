@@ -13,4 +13,12 @@ public class MhjUtilDate {
 		return builder.toString();
 	}
 
+	public static String getAnoMesSeparador(Integer ano, Integer mes, EnumSeparador separador) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(ano);
+		builder.append(separador.getSimbolo());
+		builder.append(mes);
+		return builder.toString();
+	}
+
 }

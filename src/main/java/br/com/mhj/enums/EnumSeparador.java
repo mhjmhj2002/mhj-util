@@ -2,7 +2,8 @@ package br.com.mhj.enums;
 
 public enum EnumSeparador {
 	BARRA(1,"/", "barra"),
-	TRACO(2,"-", "traco");
+	TRACO(2,"-", "traco"),
+	UNDERLINE(3,"_","underline");
 	
 	private int codigo;
 	private String simbolo;

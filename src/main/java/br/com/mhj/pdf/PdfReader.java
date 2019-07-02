@@ -14,21 +14,26 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 
-import br.com.mhj.enums.EnumMes;
 import br.com.mhj.enums.EnumType;
 
 public class PdfReader {
+	
+	DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+	DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/yyyy");
 
 	Dados dados;
 	StringBuilder linhaSeparada;
 	int nuBlocoLinha = 0;
 	int nuLinhaVencimento = 0;
 	Calendar dtVenc;
+	DadosExtratoCC dadosExtrato;
+	private Integer ano;
 
 	public PdfReader() {
 		super();
 		dados = new Dados();
 		linhaSeparada = new StringBuilder();
+		dadosExtrato = new DadosExtratoCC();
 	}
 	
 	public void read(String path, String password) throws IOException, ParseException {
@@ -458,5 +463,13 @@ public class PdfReader {
 		} catch (ParseException | ArrayIndexOutOfBoundsException e) {
 		}
 
+	}
+
+	protected Integer getAno() {
+		return ano;
+	}
+
+	protected void setAno(Integer ano) {
+		this.ano = ano;
 	}
 }

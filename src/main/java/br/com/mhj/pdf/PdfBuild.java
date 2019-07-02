@@ -20,8 +20,8 @@ public class PdfBuild extends Build {
 
 		for (int ano = calendar.get(Calendar.YEAR) - 1; ano <= calendar.get(Calendar.YEAR); ano++) {
 			for (int mes = EnumMes.JAN.getCodigo(); mes <= EnumMes.DEZ.getCodigo(); mes++) {
-				tratarMesFree(ano, mes);
-				tratarMesPlatinum(ano, mes);
+//				tratarMesFree(ano, mes);
+//				tratarMesPlatinum(ano, mes);
 				tratarMesCC(ano, mes);
 			}
 		}
@@ -109,16 +109,16 @@ public class PdfBuild extends Build {
 
 	private void tratarMesCC(int ano, int mes) throws IOException, ParseException {
 
-		EnumMes enumMes = EnumMes.getMesByCodigo(mes);
-
-		String anoMesSeparador = MhjUtilDate.getAnoMesSeparador(ano, enumMes, EnumSeparador.TRACO);
+		String anoMesSeparador = MhjUtilDate.getAnoMesSeparador(ano, mes, EnumSeparador.UNDERLINE);
 
 		PdfReaderSantander pdfReader = new PdfReaderSantander();
+		
+		pdfReader.setAno(ano);
 
 		String dir = EnumTipoCartao.CC.getNome() + "\\";
 		String dirSaida = "saida\\";
 
-		String entrada = path + dir + EnumTipoCartao.CC.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
+		String entrada = path + dir + EnumTipoCartao.EXTRATO_CC.getNome() + EnumSeparador.UNDERLINE.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.PDF.getExtensao();
 		String saida = path + dir + dirSaida + EnumTipoCartao.CC.getNome() + EnumSeparador.TRACO.getSimbolo() + anoMesSeparador
 				+ EnumExtensao.CSV.getExtensao();
