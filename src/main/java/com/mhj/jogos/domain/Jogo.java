@@ -3,6 +3,7 @@ package com.mhj.jogos.domain;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import com.mhj.jogos.enums.TipoJogo;
@@ -70,7 +71,7 @@ public class Jogo {
 		this.apostas = apostas;
 	}
 
-	public void validaApostas() {
+	public boolean validaApostas(List<Concurso> concursos) {
 		boolean ac15 = false;
 		BigDecimal v15 = new BigDecimal(0);
 		BigDecimal v14 = new BigDecimal(0);
@@ -78,35 +79,39 @@ public class Jogo {
 		BigDecimal v12 = new BigDecimal(0);
 		BigDecimal v11 = new BigDecimal(0);
 		BigDecimal vConc = new BigDecimal(0);
+		System.out.println("validacao: " + new Date());
 		for (Aposta aposta : apostas) {
-			validarAposta(aposta);
+			validarAposta(aposta, concursos);
 		}
+		System.out.println("validacao: " + new Date());
 		for (Aposta aposta : apostas) {
-			System.out.println("Acertos 15: " + aposta.getPremioAposta15().getAcertos());
-			System.out.println(aposta.getPremioAposta15().getConcursos().size());
-			v15 = soma(aposta.getPremioAposta15().getConcursos(), 15);
+			System.out.println("");
+//			System.out.println("Acertos 15: " + aposta.getPremioAposta15().getAcertos());
+			System.out.println("Acertos 15: " + aposta.getPremioAposta15().getConcursos().size());
+			v15 = soma(aposta.getPremioAposta15().getConcursos(), 15, v15);
 			ac15 = aposta.getPremioAposta15().getConcursos().size() > 0;
 
-			System.out.println("Acertos 14: " + aposta.getPremioAposta14().getAcertos());
-			System.out.println(aposta.getPremioAposta14().getConcursos().size());
-			v14 = soma(aposta.getPremioAposta14().getConcursos(), 14);
+//			System.out.println("Acertos 14: " + aposta.getPremioAposta14().getAcertos());
+			System.out.println("Acertos 14: " + aposta.getPremioAposta14().getConcursos().size());
+			v14 = soma(aposta.getPremioAposta14().getConcursos(), 14, v14);
 
-			System.out.println("Acertos 13: " + aposta.getPremioAposta13().getAcertos());
-			System.out.println(aposta.getPremioAposta13().getConcursos().size());
-			v13 = soma(aposta.getPremioAposta13().getConcursos(), 13);
+//			System.out.println("Acertos 13: " + aposta.getPremioAposta13().getAcertos());
+			System.out.println("Acertos 13: " + aposta.getPremioAposta13().getConcursos().size());
+			v13 = soma(aposta.getPremioAposta13().getConcursos(), 13, v13);
 
-			System.out.println("Acertos 12: " + aposta.getPremioAposta12().getAcertos());
-			System.out.println(aposta.getPremioAposta12().getConcursos().size());
-			v12 = soma(aposta.getPremioAposta12().getConcursos(), 12);
+//			System.out.println("Acertos 12: " + aposta.getPremioAposta12().getAcertos());
+			System.out.println("Acertos 12: " + aposta.getPremioAposta12().getConcursos().size());
+			v12 = soma(aposta.getPremioAposta12().getConcursos(), 12, v12);
 
-			System.out.println("Acertos 11: " + aposta.getPremioAposta11().getAcertos());
-			System.out.println(aposta.getPremioAposta11().getConcursos().size());
-			v11 = soma(aposta.getPremioAposta11().getConcursos(), 11);
+//			System.out.println("Acertos 11: " + aposta.getPremioAposta11().getAcertos());
+			System.out.println("Acertos 11: " + aposta.getPremioAposta11().getConcursos().size());
+			v11 = soma(aposta.getPremioAposta11().getConcursos(), 11, v11);
 //			List<Concurso> concursos = aposta.getPremioAposta().getConcursos();
 //			for (Concurso concurso : concursos) {
 //				System.out.println("Concurso:" + concurso.getNumero());
 //			}
 		}
+		System.out.println("");
 		System.out.println("Valor 15: " + v15);
 		System.out.println("Valor 14: " + v14);
 		System.out.println("Valor 13: " + v13);
@@ -117,19 +122,21 @@ public class Jogo {
 		v15 = v15.add(v12);
 		v15 = v15.add(v11);
 		System.out.println("Total: " + v15);
-		
-		for (Concurso concurso : this.concursos) {
+
+		for (Concurso concurso : concursos) {
 			vConc = vConc.add(concurso.getJogo().getValor());
 		}
-		
-		System.out.println("Total J: " + vConc);
+
+		System.out.println("Total J: " + vConc.multiply(new BigDecimal(apostas.size())));
 
 		if (ac15) {
-			System.exit(0);
+			return true;
 		}
+		return false;
 	}
 
-	private void validarAposta(Aposta aposta) {
+	private void validarApostaOld(Aposta aposta) {
+		System.out.println("validarAposta");
 		int count = 0;
 		int a15 = 0;
 		int a14 = 0;
@@ -170,6 +177,51 @@ public class Jogo {
 		}
 	}
 
+	private void validarAposta(Aposta aposta, List<Concurso> concursos) {
+//		System.out.println("validarAposta");
+		int count = 0;
+		int a15 = 0;
+		int a14 = 0;
+		int a13 = 0;
+		int a12 = 0;
+		int a11 = 0;
+		List<Dezena> dezenasA = aposta.getDezenas();
+		List<Integer> numsA = getNums(dezenasA);
+		for (Concurso concurso : concursos) {
+			List<Dezena> dezenasC = concurso.getDezenas();
+			List<Integer> numsC = getNums(dezenasC);
+			for (Integer numA : numsA) {
+				if (numsC.contains(numA)) {
+					count++;
+				}
+//				for (Integer numC : numsC) {
+//					if (numsC.contains(numA)) {
+//						count++;
+//						break;
+//					}
+//				}
+			}
+			if (count == 15) {
+				aposta.getPremioAposta15().setAcertos(a15++);
+				aposta.getPremioAposta15().getConcursos().add(concurso);
+			} else if (count == 14) {
+				aposta.getPremioAposta14().setAcertos(a14++);
+				aposta.getPremioAposta14().getConcursos().add(concurso);
+			} else if (count == 13) {
+				aposta.getPremioAposta13().setAcertos(a13++);
+				aposta.getPremioAposta13().getConcursos().add(concurso);
+			} else if (count == 12) {
+				aposta.getPremioAposta12().setAcertos(a12++);
+				aposta.getPremioAposta12().getConcursos().add(concurso);
+			} else if (count == 11) {
+				aposta.getPremioAposta11().setAcertos(a11++);
+				aposta.getPremioAposta11().getConcursos().add(concurso);
+			}
+//			System.out.println("count: " + count);
+			count = 0;
+		}
+	}
+
 	private List<Integer> getNums(List<Dezena> dezenasA) {
 		List<Integer> ret = new ArrayList<Integer>();
 		for (Dezena dezena : dezenasA) {
@@ -179,16 +231,31 @@ public class Jogo {
 		return ret;
 	}
 
-	private BigDecimal soma(List<Concurso> concursos, Integer acertos) {
+	private BigDecimal soma(List<Concurso> concursos, Integer acertos, BigDecimal valor) {
 		BigDecimal ret = new BigDecimal(0D);
 		for (Concurso c : concursos) {
 			List<Premio> premios = c.getPremios();
 			for (Premio premio : premios) {
 				if (premio.getQuantidadeAcertos().equals(acertos)) {
-					ret = ret.add(premio.getValor());
+					Integer acertos15 = new Integer(15);
+					if (acertos15.equals(acertos)) {
+						BigDecimal zero = new BigDecimal(0);
+						if (zero.compareTo(premio.getValor()) == 0) {
+							ret = ret.add(premio.getValorAcumulado());
+						} else {
+							ret = ret.add(premio.getValor());
+						}
+					}else {
+						BigDecimal zero = new BigDecimal(0);
+						if (zero.compareTo(premio.getValor()) == 0) {
+							System.out.println("valor zerado concurso: " + premio.getConcurso().getNumero() + ", acertos: " + acertos);
+						}
+						ret = ret.add(premio.getValor());
+					}
 				}
 			}
 		}
+		ret = ret.add(valor);
 		return ret;
 	}
 

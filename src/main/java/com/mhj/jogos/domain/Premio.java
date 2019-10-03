@@ -9,6 +9,7 @@ public class Premio {
 	private Long id;
 	private Integer quantidadeAcertos;
 	private BigDecimal valor;
+	private BigDecimal valorAcumulado;
 
 	private Concurso concurso;
 
@@ -56,6 +57,14 @@ public class Premio {
 
 	public void setGanhadores(List<Ganhador> ganhadores) {
 		this.ganhadores = ganhadores;
+	}
+
+	public BigDecimal getValorAcumulado() {
+		return valorAcumulado;
+	}
+
+	public void setValorAcumulado(BigDecimal valorAcumulado) {
+		this.valorAcumulado = valorAcumulado;
 	}
 
 }
