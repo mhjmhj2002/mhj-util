@@ -6,8 +6,8 @@ import java.io.IOException;
 public class Main {
 
 	public static void main(String[] args) {
-		String fileIn = "mhj-util.7z";
-		String fileOut = "saida2.txt";
+		String fileIn = "mhj.7z";
+		String fileOut = "saida3.txt";
 		String dirIn = "C:\\encode\\" + fileIn;
 		String dirOut = "C:\\encode\\decoded\\" + fileOut;
 		String fileIn2 = dirOut;

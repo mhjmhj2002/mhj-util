@@ -82,8 +82,12 @@ public class MainGm {
 //		game.teste(game.getApostasAleatorio(1,15,base));
 		
 		//aleatorio 15 jogos ruim
-		base = Arrays.asList(5,6,7,12,13,14,19,20,21);
-		game.teste(game.getApostas(15,15,base),50);
+//		base = Arrays.asList(5,6,7,12,13,14,19,20,21);
+//		game.teste(game.getApostas(15,15,base),50);
+		
+		//aleatorio 1 jogo 18 numeros
+		base = Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25);
+		game.teste(game.getApostasAleatorio(1,18,base),50);
 		
 		System.out.println("Tent: " + tent);
 //		game.teste2();
