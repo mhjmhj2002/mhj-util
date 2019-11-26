@@ -538,12 +538,12 @@ public class PdfReaderSantander extends PdfReader {
 		
 		DadoExtratoCC dadoExtratoCC = new DadoExtratoCC();
 		
-		dadoExtratoCC.setDataCompra(dataCompra);
-		dadoExtratoCC.setDataLancamento(dataLancamento);
-		dadoExtratoCC.setLugarCompra(lugarCompra);
-		dadoExtratoCC.setNumeroDocumento(numeroDocumento);
-		dadoExtratoCC.setTipoCompra(tipoCompra);
-		dadoExtratoCC.setValorCompra(valorCompra);
+//		dadoExtratoCC.setDataCompra(dataCompra);
+//		dadoExtratoCC.setDataLancamento(dataLancamento);
+//		dadoExtratoCC.setLugarCompra(lugarCompra);
+//		dadoExtratoCC.setNumeroDocumento(numeroDocumento);
+//		dadoExtratoCC.setTipoCompra(tipoCompra);
+//		dadoExtratoCC.setValorCompra(valorCompra);
 		
 		dadosExtrato.getDados().add(dadoExtratoCC);
 

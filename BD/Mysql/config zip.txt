@@ -1,0 +1,7 @@
+--Config
+bin/mysqld --initialize --user=mysql
+mysqld --init-file=C:\Users\t0404mnl\Documents\Manuel\Pessoal\Alura\Mysql\mysql-init.txt
+--Start Server
+bin/mysqld --console
+--Start Client
+mysql -u root -p

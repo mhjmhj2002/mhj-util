@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 import org.apache.commons.lang.StringUtils;
 
-public class Teste {
+public class ConectorOracle {
 	Connection connection = null;
 	
 	public void teste() {

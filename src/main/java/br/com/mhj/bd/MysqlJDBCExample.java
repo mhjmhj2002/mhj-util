@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class OracleJDBCExample {
+public class MysqlJDBCExample {
 	
 	public static void main(String[] argv) {
-		ConectorOracle teste = new ConectorOracle();
-		teste.teste();
+		ConectorMysql teste = new ConectorMysql();
+		teste.connectOverProxy();
 	}
 
     public void connTest() {
